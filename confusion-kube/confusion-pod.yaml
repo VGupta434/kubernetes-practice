@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: confusion-pod
+  namespace: default
+  labels:
+    app: "confusion"
+spec:
+  containers:
+  - name: confusion-container
+    image: vivekgupta434/confusion-container:V0.0

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+  labels:
+    app: "nginx_1"
+spec:
+  containers:
+  - name: nginx-cont
+    image: nginx
+  - name: redis-cont
+    image: redis
+

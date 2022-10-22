@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: test-rs
+spec:
+  replicas: 3
+  selector:
+    matchExpressions:
+      - {key: name, operator: In, values: [nginx_1, nginx_2]}
+  template:
+    metadata:
+      name: app-pod
+      labels:
+        app: "nginx_2"
+     spec:
+      containers:
+      - name: nginx_cont
+        image: nginx
+      - name: redis_cont
+        image: redis
+
