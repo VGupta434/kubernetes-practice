@@ -1,0 +1,56 @@
+# create pvc of 20 gb
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: 
+  name: fe-pvc
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 20Gi
+---
+# create NodePort SVC
+apiVersion: v1
+kind: Service
+metadata:
+  name: fe-node-port
+spec:
+  selector:
+    app: wordpress
+    tier: fe
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 80
+---
+
+# create the Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fe-deployment
+  labels:
+    app: wordpress
+    tier: db
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: wordpress
+      tier: fe
+  template:
+    metadata:
+      labels:
+        app: wordpress
+        tier: fe
+    spec:
+      containers:
+      - name: fe-container
+        image: wordpress
+        ports:
+        - containerPort: 80
+          name: mysql-port
+---
