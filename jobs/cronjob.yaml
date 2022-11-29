@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cron-job-test
+spec:
+  concurrencyPolicy: Forbid
+  schedule: 0,9,13,15 * ? * MON,TUE,WED,THU,FRI 
+  jobTemplate:
+    metadata:
+      name: countdown-job
+    spec:
+      completions: 2
+      parallelism: 1
+      template:
+        metadata:
+          name: countdown
+        spec:
+          containers:
+            - name: counter
+              image: centos:7
+              command:
+                - "bin/bash"
+                - "-c"
+                - "for i in 9 8 7 6 5 4 3 2 1; do echo $i; done"
+          restartPolicy: OnFailure
